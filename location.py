@@ -1,3 +1,6 @@
+from typing import Sequence
+
+from monster import Monster
 
 
 class Location:
@@ -8,12 +11,13 @@ class Location:
         self.locations = {}
         self.treasure = {}
         self.monsters = []
+        self.armor = {}
 
-    def get_living_monsters(self):
+    def get_living_monsters(self) -> Sequence[Monster]:
         monsters = [m for m in self.monsters if m.hp > 0]
         return monsters
 
-    def get_dead_monsters(self):
+    def get_dead_monsters(self) -> Sequence[Monster]:
         monsters = [m for m in self.monsters if m.hp < 1]
         return monsters
 

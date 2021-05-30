@@ -1,8 +1,12 @@
 from typing import Sequence
 
+from commands.search import search_location
+from locations.big_room import get_big_room
+from locations.corridor import get_corridor
 from monster import Monster
 from player import Player
 from location import Location
+from prompts import print_dict
 
 
 def create_game() -> Player:
@@ -11,32 +15,15 @@ def create_game() -> Player:
         name='entrance',
         description="You are the entrance of scary cave.")
 
-    corridor = Location(
-        name='corridor',
-        description="You are in a corridor leading to a large wooden door.")
-    corridor.treasure = {
-        'gold': 3
-    }
+    corridor = get_corridor()
+    big_room = get_big_room()
 
-    big_room = Location(
-        name="bigroom",
-        description="You are in a large chamber with many doors."
-    )
+    # Link Rooms Together
     big_room.locations[corridor.name] = corridor
     corridor.locations['door'] = big_room
-
-    corridor.monsters.append(
-        Monster(
-            hp=5,
-            power=4,
-            treasure={
-                'gold': 4
-            }
-        )
-    )
-
     root.locations[corridor.name] = corridor
     corridor.locations[root.name] = root
+
     player = Player(20, 10, root)
     return player
 
@@ -60,28 +47,14 @@ def loop(player: Player):
                 print("No monsters to attack")
 
         elif command == 'inv':
-            print_treasure(player.treasure)
+            print_dict(player.treasure)
 
         elif command == 'search':
-            if monsters:
-                print("You can't search the area with live monsters attacking!")
-            else:
-                dead_monsters = player.location.get_dead_monsters()
-                if player.location.treasure:
-                    print(f"You find treasure in {player.location.name}:")
-                    print_treasure(player.location.treasure)
-                    player.merge_treasure(player.location.treasure)
-                    player.location.treasure = {}
+            search_location(player)
 
-                if dead_monsters:
-                    print(f"You search {len(dead_monsters)} monsters:")
-                    for i, monster in enumerate(dead_monsters):
-                        print(f"Monster {i + 1} had:")
-                        print_treasure(monster.treasure)
-                        player.merge_treasure(monster.treasure)
-                        monster.treasure = {}
-            print("You have the following treasure:")
-            print_treasure(player.treasure)
+        elif command.startswith("take "):
+            target = command.split()[1]
+
 
         elif command.startswith("open "):
             location = command.split()[1]
@@ -100,11 +73,6 @@ def fight(player: Player, monsters: Sequence[Monster]):
             player.take_damage(monster.strike_power())
             if player.hp < 1:
                 print("You died!")
-
-
-def print_treasure(treasure):
-    for k in treasure:
-        print(f"    {treasure[k]} {k}")
 
 
 if __name__ == "__main__":
