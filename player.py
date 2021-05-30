@@ -14,3 +14,9 @@ class Player(CharacterMixin):
     def merge_treasure(self, treasure):
         for k in treasure:
             self.treasure[k] += treasure[k]
+
+    def navigate(self, location):
+        try:
+            self.location = self.location.locations[location]
+        except KeyError:
+            print(f"The command or location '{location}' doesn't seem to exist.")

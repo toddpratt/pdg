@@ -18,6 +18,13 @@ def create_game() -> Player:
         'gold': 3
     }
 
+    big_room = Location(
+        name="bigroom",
+        description="You are in a large chamber with many doors."
+    )
+    big_room.locations[corridor.name] = corridor
+    corridor.locations['door'] = big_room
+
     corridor.monsters.append(
         Monster(
             hp=5,
@@ -51,6 +58,10 @@ def loop(player: Player):
                 fight(player, monsters)
             else:
                 print("No monsters to attack")
+
+        elif command == 'inv':
+            print_treasure(player.treasure)
+
         elif command == 'search':
             if monsters:
                 print("You can't search the area with live monsters attacking!")
@@ -71,11 +82,13 @@ def loop(player: Player):
                         monster.treasure = {}
             print("You have the following treasure:")
             print_treasure(player.treasure)
+
+        elif command.startswith("open "):
+            location = command.split()[1]
+            player.navigate(location)
+
         else:
-            try:
-                player.location = player.location.locations[command]
-            except KeyError:
-                print(f"The location '{command}' doesn't seem to exist.")
+            player.navigate(command)
 
 
 def fight(player: Player, monsters: Sequence[Monster]):
