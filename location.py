@@ -1,6 +1,7 @@
-from typing import Sequence
+from typing import Sequence, Mapping
 
 from monster import Monster
+from passage import Passage
 
 
 class Location:
@@ -8,7 +9,7 @@ class Location:
     def __init__(self, name: str, description: str):
         self.name = name
         self.description = description
-        self.locations = {}
+        self.passages: Mapping[str, Passage] = {}
         self.treasure = {}
         self.monsters = []
         self.armor = {}

@@ -15,8 +15,8 @@ class Player(CharacterMixin):
         for k in treasure:
             self.treasure[k] += treasure[k]
 
-    def navigate(self, location):
+    def navigate(self, name):
         try:
-            self.location = self.location.locations[location]
+            self.location = self.location.passages[name].location
         except KeyError:
-            print(f"The command or location '{location}' doesn't seem to exist.")
+            print(f"The command or location '{name}' doesn't seem to exist.")
