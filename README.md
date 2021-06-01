@@ -9,7 +9,7 @@ Just run
 # Contributing
 
 1. Think of a thing to contribute (A location with passages from and to it) and create an issue in github
-2. Create a branch: ```git checkout -b i-<issue number>```  (Use the issue number of the issue you created in #1.
+2. Create a branch: ```git checkout -b i-<issue number>```  (Use the issue number of the issue you created in #1.) (Also, this branch is known as a "feature branch")
 3. Commit your code to the branch: ```git commit -am "Created 'Blah' location"```
 4. Push your branch: ```git push --set-upstream origin i-<issue number>``` (again, replace issue number)
 5. Create a pull request
