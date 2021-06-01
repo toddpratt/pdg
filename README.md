@@ -35,3 +35,7 @@ Branch 'i-1' set up to track remote branch 'i-1' from 'origin'.
 ```
 
 Use that URL to create a PR.
+
+# Adding a location
+
+Create a module (file) in the locations package (directory) with a function that creates the location.  Then import that module into main.py and, in the create_game function, create a variable using your function.  Use that variable to set passages on your location and any applicable locations.  See the existing locations for examples.
